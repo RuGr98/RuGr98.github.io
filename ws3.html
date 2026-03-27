@@ -1,0 +1,1270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Andreas Oikonomou | Electronics & Space Optics Engineer</title>
+    <meta name="description" content="Certified Electrical & Space Optics Engineer based in Heraklion, Crete. ESA & DLR researcher. PCB design, embedded systems, licensed TEE engineering.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:ital,wght@0,300;0,400;1,300&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+
+    <style>
+        /* ==============================
+           DESIGN TOKENS
+        ============================== */
+        :root {
+            --bg:        #0a0804;
+            --bg-panel:  #111008;
+            --bg-card:   #16120b;
+            --border:    rgba(217,119,6,0.15);
+            --border-hi: rgba(217,119,6,0.35);
+
+            --amber:     #d97706;
+            --amber-dim: #b45309;
+            --amber-glow:rgba(217,119,6,0.08);
+            --gold:      #f59e0b;
+            --green:     #10b981;
+            --sky:       #38bdf8;
+
+            --text:      #f5f0e8;
+            --muted:     #8a7f72;
+            --subtle:    #3d3429;
+
+            --mono: 'DM Mono', monospace;
+            --sans: 'DM Sans', sans-serif;
+            --display: 'Syne', sans-serif;
+
+            --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+            --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: var(--sans);
+            font-size: 1rem;
+            line-height: 1.65;
+            overflow-x: hidden;
+        }
+
+        /* ==============================
+           DOT GRID BACKGROUND
+        ============================== */
+        body::before {
+            content:'';
+            position: fixed;
+            inset: 0;
+            background-image:
+                radial-gradient(rgba(217,119,6,0.18) 1px, transparent 1px);
+            background-size: 28px 28px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Ambient glow orbs */
+        .orb {
+            position: fixed;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 0;
+            filter: blur(100px);
+            opacity: 0.35;
+        }
+        .orb-1 { width:600px; height:600px; background: radial-gradient(circle, #d9770620, transparent 70%); top:-100px; left:-100px; }
+        .orb-2 { width:500px; height:500px; background: radial-gradient(circle, #b4530920, transparent 70%); bottom:-50px; right:-100px; animation: orb-drift 14s ease-in-out infinite alternate; }
+
+        @keyframes orb-drift {
+            from { transform: translate(0,0) scale(1); }
+            to   { transform: translate(-60px, 40px) scale(1.15); }
+        }
+
+        /* ==============================
+           SCROLL REVEAL
+        ============================== */
+        .reveal {
+            opacity: 0;
+            transform: translateY(28px);
+            transition: opacity 0.75s var(--ease-out-expo), transform 0.75s var(--ease-out-expo);
+        }
+        .reveal.visible { opacity:1; transform:translateY(0); }
+        .reveal-delay-1 { transition-delay: 0.1s; }
+        .reveal-delay-2 { transition-delay: 0.2s; }
+        .reveal-delay-3 { transition-delay: 0.3s; }
+        .reveal-delay-4 { transition-delay: 0.4s; }
+
+        /* ==============================
+           NAVIGATION
+        ============================== */
+        nav {
+            position: sticky;
+            top: 0;
+            z-index: 200;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px 48px;
+            background: rgba(10,8,4,0.82);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .nav-logo {
+            font-family: var(--display);
+            font-weight: 800;
+            font-size: 1.1rem;
+            letter-spacing: 0.12em;
+            color: var(--text);
+            text-decoration: none;
+        }
+        .nav-logo span { color: var(--amber); }
+
+        .nav-links { display:flex; align-items:center; gap:8px; }
+
+        .nav-links a {
+            font-family: var(--mono);
+            font-size: 0.78rem;
+            color: var(--muted);
+            text-decoration: none;
+            padding: 7px 14px;
+            border-radius: 4px;
+            letter-spacing: 0.05em;
+            transition: color 0.2s, background 0.2s;
+        }
+        .nav-links a:hover { color: var(--text); background: var(--amber-glow); }
+
+        .nav-cv {
+            font-family: var(--mono);
+            font-size: 0.78rem;
+            color: var(--amber) !important;
+            border: 1px solid var(--border-hi) !important;
+            padding: 7px 16px !important;
+            border-radius: 4px;
+            letter-spacing: 0.05em;
+            transition: background 0.2s, color 0.2s !important;
+        }
+        .nav-cv:hover { background: var(--amber) !important; color: var(--bg) !important; }
+
+        /* Mobile nav toggle */
+        .nav-toggle { display:none; flex-direction:column; gap:5px; cursor:pointer; background:none; border:none; padding:4px; }
+        .nav-toggle span { display:block; width:22px; height:2px; background:var(--muted); border-radius:2px; transition:all 0.3s; }
+
+        /* ==============================
+           HERO
+        ============================== */
+        #hero {
+            position: relative;
+            z-index: 1;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 120px 48px 80px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .hero-eyebrow {
+            font-family: var(--mono);
+            font-size: 0.75rem;
+            letter-spacing: 0.2em;
+            color: var(--amber);
+            text-transform: uppercase;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .hero-eyebrow::before {
+            content:'';
+            display:block;
+            width:40px;
+            height:1px;
+            background: var(--amber);
+        }
+
+        .hero-name {
+            font-family: var(--display);
+            font-weight: 800;
+            font-size: clamp(3rem, 8vw, 6.5rem);
+            line-height: 0.95;
+            letter-spacing: -0.02em;
+            margin-bottom: 24px;
+        }
+
+        .hero-name .line-2 { color: var(--amber); display: block; }
+
+        .hero-title {
+            font-family: var(--sans);
+            font-weight: 300;
+            font-size: clamp(1rem, 2.5vw, 1.35rem);
+            color: var(--muted);
+            max-width: 560px;
+            margin-bottom: 16px;
+            line-height: 1.7;
+        }
+
+        .hero-badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 48px;
+        }
+
+        .badge {
+            font-family: var(--mono);
+            font-size: 0.72rem;
+            letter-spacing: 0.08em;
+            padding: 5px 12px;
+            border-radius: 3px;
+            border: 1px solid var(--border);
+            color: var(--muted);
+            background: var(--bg-card);
+        }
+        .badge.amber { border-color: rgba(217,119,6,0.4); color: var(--amber); }
+        .badge.green  { border-color: rgba(16,185,129,0.4); color: var(--green); }
+        .badge.sky    { border-color: rgba(56,189,248,0.4);  color: var(--sky); }
+
+        .hero-cta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+        }
+
+        /* Scroll indicator */
+        .scroll-hint {
+            position: absolute;
+            bottom: 40px;
+            left: 48px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: var(--mono);
+            font-size: 0.7rem;
+            color: var(--muted);
+            letter-spacing: 0.1em;
+        }
+        .scroll-line {
+            width: 48px;
+            height: 1px;
+            background: var(--subtle);
+            position: relative;
+            overflow: hidden;
+        }
+        .scroll-line::after {
+            content:'';
+            position:absolute;
+            top:0; left:-100%;
+            width:100%; height:100%;
+            background: var(--amber);
+            animation: scan 2.5s ease-in-out infinite;
+        }
+        @keyframes scan { 0%{left:-100%} 100%{left:100%} }
+
+        /* ==============================
+           BUTTONS
+        ============================== */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-family: var(--mono);
+            font-size: 0.82rem;
+            font-weight: 400;
+            letter-spacing: 0.06em;
+            padding: 13px 26px;
+            border-radius: 4px;
+            text-decoration: none;
+            cursor: pointer;
+            border: none;
+            transition: all 0.25s var(--ease-in-out);
+        }
+        .btn-primary {
+            background: var(--amber);
+            color: var(--bg);
+        }
+        .btn-primary:hover { background: var(--gold); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(217,119,6,0.3); }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--amber);
+            border: 1px solid var(--border-hi);
+        }
+        .btn-outline:hover { background: var(--amber-glow); border-color: var(--amber); transform: translateY(-2px); }
+        .btn-green-o { color: var(--green); border-color: rgba(16,185,129,0.4); }
+        .btn-green-o:hover { background: rgba(16,185,129,0.08); border-color: var(--green); }
+        .btn-gold-o { color: var(--gold); border-color: rgba(245,158,11,0.4); }
+        .btn-gold-o:hover { background: rgba(245,158,11,0.08); border-color: var(--gold); }
+        .btn-full { width:100%; justify-content:center; margin-top:18px; }
+
+        /* ==============================
+           SECTIONS
+        ============================== */
+        .section {
+            position: relative;
+            z-index: 1;
+            padding: 100px 48px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--border-hi), transparent);
+            margin: 0 48px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .section-tag {
+            font-family: var(--mono);
+            font-size: 0.72rem;
+            letter-spacing: 0.2em;
+            color: var(--amber);
+            text-transform: uppercase;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .section-tag::before { content:''; display:block; width:28px; height:1px; background:var(--amber); }
+
+        .section-title {
+            font-family: var(--display);
+            font-weight: 700;
+            font-size: clamp(2rem, 5vw, 3.2rem);
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+            margin-bottom: 16px;
+        }
+        .section-title em { font-style: normal; color: var(--amber); }
+
+        .section-lead {
+            color: var(--muted);
+            font-size: 1.05rem;
+            max-width: 600px;
+            margin-bottom: 56px;
+            font-weight: 300;
+        }
+
+        /* ==============================
+           ABOUT / RESEARCH STRIP
+        ============================== */
+        .research-strip {
+            position: relative;
+            z-index: 1;
+            background: var(--bg-panel);
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            padding: 40px 48px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            overflow: hidden;
+        }
+        .research-strip::before {
+            content:'';
+            position:absolute;
+            left:0; top:0; bottom:0;
+            width:4px;
+            background: linear-gradient(180deg, var(--amber), var(--gold));
+        }
+        .research-strip .label {
+            font-family: var(--mono);
+            font-size: 0.7rem;
+            letter-spacing: 0.15em;
+            color: var(--amber);
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+        .research-strip p {
+            color: var(--muted);
+            font-size: 0.92rem;
+            line-height: 1.6;
+        }
+        .research-strip p strong { color: var(--text); font-weight: 500; }
+        .strip-sep { width:1px; height:40px; background:var(--border); flex-shrink:0; }
+
+        /* ==============================
+           STATS ROW
+        ============================== */
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 1px;
+            background: var(--border);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 64px;
+        }
+        .stat-cell {
+            background: var(--bg-card);
+            padding: 28px 24px;
+            text-align: center;
+        }
+        .stat-number {
+            font-family: var(--display);
+            font-size: 2.4rem;
+            font-weight: 800;
+            color: var(--amber);
+            line-height: 1;
+            margin-bottom: 6px;
+        }
+        .stat-label {
+            font-family: var(--mono);
+            font-size: 0.7rem;
+            letter-spacing: 0.1em;
+            color: var(--muted);
+            text-transform: uppercase;
+        }
+
+        /* ==============================
+           SKILL CARDS
+        ============================== */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2px;
+            background: var(--border);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .skill-card {
+            background: var(--bg-card);
+            padding: 36px 32px;
+            position: relative;
+            transition: background 0.3s;
+        }
+        .skill-card:hover { background: var(--bg-panel); }
+        .skill-card::after {
+            content:'';
+            position:absolute;
+            inset:0;
+            background: linear-gradient(135deg, var(--amber-glow) 0%, transparent 60%);
+            opacity:0;
+            transition: opacity 0.3s;
+            pointer-events:none;
+        }
+        .skill-card:hover::after { opacity:1; }
+
+        .skill-icon {
+            width: 44px; height: 44px;
+            border-radius: 8px;
+            background: var(--amber-glow);
+            border: 1px solid var(--border-hi);
+            display: flex; align-items:center; justify-content:center;
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+        }
+
+        .skill-card h3 {
+            font-family: var(--display);
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        .skill-card p { color: var(--muted); font-size: 0.9rem; margin-bottom: 18px; }
+
+        .skill-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+        .skill-tag {
+            font-family: var(--mono);
+            font-size: 0.68rem;
+            padding: 3px 9px;
+            border-radius: 3px;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            color: var(--muted);
+            letter-spacing: 0.05em;
+        }
+
+        /* ==============================
+           SERVICE CARDS
+        ============================== */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .service-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 36px 32px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 24px;
+            position: relative;
+            overflow: hidden;
+            transition: border-color 0.3s, transform 0.3s;
+            cursor: pointer;
+        }
+        .service-card:hover { transform: translateY(-4px); }
+        .service-card.amber:hover { border-color: var(--amber); }
+        .service-card.green:hover  { border-color: var(--green); }
+        .service-card.sky:hover    { border-color: var(--sky); }
+
+        .service-card .corner-accent {
+            position:absolute;
+            top:0; right:0;
+            width:80px; height:80px;
+            border-radius: 0 10px 0 80px;
+            opacity:0.07;
+        }
+        .service-card.amber .corner-accent { background: var(--amber); }
+        .service-card.green  .corner-accent { background: var(--green); }
+        .service-card.sky    .corner-accent { background: var(--sky); }
+
+        .service-num {
+            font-family: var(--mono);
+            font-size: 0.7rem;
+            color: var(--subtle);
+            letter-spacing: 0.1em;
+            margin-bottom: 16px;
+        }
+        .service-card h3 {
+            font-family: var(--display);
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        .service-card.amber h3 { color: var(--gold); }
+        .service-card.green  h3 { color: var(--green); }
+        .service-card.sky    h3 { color: var(--sky); }
+
+        .service-card p { color: var(--muted); font-size: 0.93rem; line-height: 1.7; }
+
+        .service-features {
+            list-style: none;
+            margin-top: 4px;
+        }
+        .service-features li {
+            font-size: 0.87rem;
+            color: var(--muted);
+            padding: 6px 0;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .service-features li:last-child { border-bottom: none; }
+        .service-features li::before {
+            content:'→';
+            font-family: var(--mono);
+            font-size: 0.75rem;
+            color: var(--amber);
+            flex-shrink: 0;
+        }
+        .service-card.green .service-features li::before { color: var(--green); }
+        .service-card.sky   .service-features li::before { color: var(--sky); }
+
+        /* ==============================
+           TIMELINE / RESEARCH
+        ============================== */
+        .timeline {
+            position: relative;
+            padding-left: 32px;
+        }
+        .timeline::before {
+            content:'';
+            position:absolute;
+            left:0; top:8px; bottom:8px;
+            width:1px;
+            background: linear-gradient(180deg, var(--amber), transparent);
+        }
+        .timeline-item {
+            position: relative;
+            margin-bottom: 44px;
+        }
+        .timeline-item::before {
+            content:'';
+            position:absolute;
+            left:-36px; top:6px;
+            width:9px; height:9px;
+            border-radius:50%;
+            background: var(--amber);
+            box-shadow: 0 0 12px rgba(217,119,6,0.5);
+        }
+        .timeline-year {
+            font-family: var(--mono);
+            font-size: 0.7rem;
+            color: var(--amber);
+            letter-spacing: 0.12em;
+            margin-bottom: 6px;
+        }
+        .timeline-item h4 {
+            font-family: var(--display);
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+        .timeline-item p { color: var(--muted); font-size: 0.9rem; }
+
+        /* ==============================
+           CONTACT
+        ============================== */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 48px;
+            align-items: start;
+        }
+
+        .contact-info h3 {
+            font-family: var(--display);
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+        .contact-info p { color: var(--muted); font-size: 0.95rem; margin-bottom: 28px; line-height: 1.8; }
+
+        .contact-links { display: flex; flex-direction: column; gap: 10px; }
+        .contact-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-family: var(--mono);
+            font-size: 0.82rem;
+            color: var(--muted);
+            text-decoration: none;
+            padding: 12px 16px;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            background: var(--bg-card);
+            transition: all 0.25s;
+        }
+        .contact-link:hover { border-color: var(--amber); color: var(--amber); background: var(--amber-glow); }
+        .contact-link-icon { font-size: 1.1rem; }
+
+        /* Contact form styled container */
+        .contact-form-block {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 36px;
+        }
+        .contact-form-block h4 {
+            font-family: var(--display);
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+        .form-group { margin-bottom: 16px; }
+        .form-group label {
+            font-family: var(--mono);
+            font-size: 0.72rem;
+            letter-spacing: 0.1em;
+            color: var(--muted);
+            text-transform: uppercase;
+            display: block;
+            margin-bottom: 6px;
+        }
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 11px 14px;
+            color: var(--text);
+            font-family: var(--sans);
+            font-size: 0.9rem;
+            transition: border-color 0.2s;
+            outline: none;
+            resize: vertical;
+        }
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus { border-color: var(--amber); }
+        .form-group select option { background: var(--bg-card); }
+
+        /* ==============================
+           MODAL
+        ============================== */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.88);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 24px;
+        }
+        .modal-overlay.open { display: flex; }
+
+        .modal-box {
+            background: var(--bg-card);
+            border: 1px solid var(--border-hi);
+            border-radius: 12px;
+            max-width: 680px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            padding: 48px;
+            animation: modal-in 0.35s var(--ease-out-expo);
+        }
+        @keyframes modal-in {
+            from { opacity:0; transform:scale(0.94) translateY(20px); }
+            to   { opacity:1; transform:scale(1) translateY(0); }
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 20px; right: 24px;
+            background: none;
+            border: none;
+            color: var(--muted);
+            font-size: 1.4rem;
+            cursor: pointer;
+            width: 32px; height: 32px;
+            display: flex; align-items:center; justify-content:center;
+            border-radius: 4px;
+            transition: background 0.2s, color 0.2s;
+            line-height: 1;
+        }
+        .modal-close:hover { background: var(--border); color: var(--text); }
+
+        .modal-eyebrow {
+            font-family: var(--mono);
+            font-size: 0.72rem;
+            letter-spacing: 0.15em;
+            color: var(--amber);
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+        .modal-box h3 {
+            font-family: var(--display);
+            font-size: 1.7rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+        .modal-box p { color: var(--muted); font-size: 0.93rem; line-height: 1.75; margin-bottom: 12px; }
+        .modal-box h4 {
+            font-family: var(--display);
+            font-size: 1rem;
+            font-weight: 700;
+            margin-top: 28px;
+            margin-bottom: 12px;
+            color: var(--text);
+        }
+        .modal-list {
+            list-style: none;
+            margin-bottom: 12px;
+        }
+        .modal-list li {
+            font-size: 0.9rem;
+            color: var(--muted);
+            padding: 9px 0;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            gap: 10px;
+        }
+        .modal-list li:last-child { border-bottom: none; }
+        .modal-list li strong { color: var(--text); font-weight: 500; flex-shrink:0; }
+
+        /* Modal accent top bar */
+        .modal-accent { height: 3px; border-radius: 3px 3px 0 0; position:absolute; top:0; left:0; right:0; border-radius:12px 12px 0 0; }
+        .modal-accent.amber { background: linear-gradient(90deg, var(--amber), var(--gold)); }
+        .modal-accent.green  { background: linear-gradient(90deg, var(--green), #6ee7b7); }
+        .modal-accent.sky    { background: linear-gradient(90deg, var(--sky), #7dd3fc); }
+
+        /* ==============================
+           FOOTER
+        ============================== */
+        footer {
+            position: relative;
+            z-index: 1;
+            border-top: 1px solid var(--border);
+            padding: 40px 48px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+            background: var(--bg-panel);
+        }
+        footer .logo {
+            font-family: var(--display);
+            font-weight: 800;
+            font-size: 1rem;
+            letter-spacing: 0.1em;
+        }
+        footer .logo span { color: var(--amber); }
+        footer p {
+            font-family: var(--mono);
+            font-size: 0.72rem;
+            color: var(--muted);
+            letter-spacing: 0.05em;
+        }
+
+        /* ==============================
+           RESPONSIVE
+        ============================== */
+        @media (max-width: 900px) {
+            nav { padding: 16px 24px; }
+            .nav-links { display:none; flex-direction:column; position:absolute; top:60px; left:0; right:0; background:rgba(10,8,4,0.97); border-bottom:1px solid var(--border); padding:20px 24px; gap:4px; }
+            .nav-links.open { display:flex; }
+            .nav-toggle { display:flex; }
+
+            #hero, .section { padding-left: 24px; padding-right: 24px; }
+            #hero { padding-top: 80px; }
+            .section-divider { margin: 0 24px; }
+            .research-strip { flex-direction:column; padding: 28px 24px; gap:14px; }
+            .strip-sep { width:40px; height:1px; }
+            .contact-grid { grid-template-columns:1fr; gap:28px; }
+            footer { padding: 28px 24px; flex-direction:column; align-items:flex-start; }
+            .scroll-hint { display:none; }
+        }
+
+        @media (max-width: 500px) {
+            .hero-cta { flex-direction: column; }
+            .btn { width: 100%; justify-content: center; }
+            .modal-box { padding: 36px 24px; }
+            .stats-row { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+
+    <nav>
+        <a href="#hero" class="nav-logo">A.<span>OIKONOMOU</span></a>
+        <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+            <span></span><span></span><span></span>
+        </button>
+        <div class="nav-links" id="navLinks">
+            <a href="#about">About</a>
+            <a href="#skills">Skills</a>
+            <a href="#research">Research</a>
+            <a href="#services">Services</a>
+            <a href="#contact">Contact</a>
+            <a href="./cv_2025v4.pdf" target="_blank" class="nav-cv">↗ View CV</a>
+        </div>
+    </nav>
+
+    <section id="hero">
+        <div class="hero-eyebrow reveal">Electrical & Space Optics Engineer</div>
+        <h1 class="hero-name reveal reveal-delay-1">
+            Andreas
+            <span class="line-2">Oikonomou</span>
+        </h1>
+        <p class="hero-title reveal reveal-delay-2">
+            From quantum optical benches in space to embedded circuits on Earth — bridging deep-tech research and precision engineering for industry, academia, and beyond.
+        </p>
+        <div class="hero-badges reveal reveal-delay-2">
+            <span class="badge amber">TEE–TCG Certified</span>
+            <span class="badge sky">ESA Researcher</span>
+            <span class="badge sky">DLR Collaborator</span>
+            <span class="badge green">BEC Lab · IESL</span>
+            <span class="badge">Heraklion, Crete 🇬🇷</span>
+        </div>
+        <div class="hero-cta reveal reveal-delay-3">
+            <a href="#services" class="btn btn-primary">Explore Services ↓</a>
+            <a href="./cv_2025v4.pdf" target="_blank" class="btn btn-outline">Download CV ↗</a>
+        </div>
+        <div class="scroll-hint">
+            <div class="scroll-line"></div>
+            SCROLL TO EXPLORE
+        </div>
+    </section>
+
+    <div class="research-strip reveal" id="about">
+        <div class="label">Current Research</div>
+        <div class="strip-sep"></div>
+        <p>
+            Active researcher at the <strong>BEC Lab (IESL)</strong> — developing precision optical systems for space applications in collaboration with the
+            <strong>European Space Agency (ESA)</strong> and the <strong>German Aerospace Center (DLR)</strong>.
+            Working with custom Zerodur optical breadboards designed for ultra-high stability in orbital environments.
+        </p>
+    </div>
+
+    <div class="section" style="padding-bottom: 0;">
+        <div class="stats-row reveal">
+            <div class="stat-cell">
+                <div class="stat-number">3+</div>
+                <div class="stat-label">Years Research</div>
+            </div>
+            <div class="stat-cell">
+                <div class="stat-number">ESA</div>
+                <div class="stat-label">Agency Partner</div>
+            </div>
+            <div class="stat-cell">
+                <div class="stat-number">TEE</div>
+                <div class="stat-label">Licensed Engineer</div>
+            </div>
+            <div class="stat-cell">
+                <div class="stat-number">∞</div>
+                <div class="stat-label">Curiosity</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <div class="section" id="skills">
+        <div class="section-tag reveal">Technical Arsenal</div>
+        <h2 class="section-title reveal reveal-delay-1">What I <em>Build</em></h2>
+        <p class="section-lead reveal reveal-delay-2">From PCB layouts to laser optical systems — a hands-on engineering stack refined through research and real-world projects.</p>
+
+        <div class="skills-grid">
+            <div class="skill-card reveal">
+                <div class="skill-icon">⚙️</div>
+                <h3>Hardware & PCB Design</h3>
+                <p>Full-cycle electronics development from schematic to functional prototype, designed to perform in demanding environments.</p>
+                <div class="skill-tags">
+                    <span class="skill-tag">KiCAD</span>
+                    <span class="skill-tag">OrCAD</span>
+                    <span class="skill-tag">Allegro</span>
+                    <span class="skill-tag">PCB Layout</span>
+                    <span class="skill-tag">Prototyping</span>
+                </div>
+            </div>
+            <div class="skill-card reveal reveal-delay-1">
+                <div class="skill-icon">🔬</div>
+                <h3>Space Optics & Photonics</h3>
+                <p>Laser and quantum optical system integration. Custom Zerodur breadboards engineered for orbital stability requirements.</p>
+                <div class="skill-tags">
+                    <span class="skill-tag">Zerodur Optics</span>
+                    <span class="skill-tag">Laser Systems</span>
+                    <span class="skill-tag">Interferometry</span>
+                    <span class="skill-tag">Quantum Optics</span>
+                </div>
+            </div>
+            <div class="skill-card reveal reveal-delay-2">
+                <div class="skill-icon">🖥️</div>
+                <h3>Embedded Systems</h3>
+                <p>MCU programming and lab automation — turning raw hardware into intelligent, responsive systems for measurement and control.</p>
+                <div class="skill-tags">
+                    <span class="skill-tag">STM32</span>
+                    <span class="skill-tag">Arduino</span>
+                    <span class="skill-tag">Raspberry Pi</span>
+                    <span class="skill-tag">LabVIEW</span>
+                    <span class="skill-tag">VISA</span>
+                </div>
+            </div>
+            <div class="skill-card reveal reveal-delay-3">
+                <div class="skill-icon">💻</div>
+                <h3>Software & Simulation</h3>
+                <p>Scientific computing and signal processing for data acquisition, modelling, and SDR applications.</p>
+                <div class="skill-tags">
+                    <span class="skill-tag">Python</span>
+                    <span class="skill-tag">MATLAB</span>
+                    <span class="skill-tag">C / C++</span>
+                    <span class="skill-tag">GNU Radio</span>
+                    <span class="skill-tag">GQRX</span>
+                </div>
+            </div>
+            <div class="skill-card reveal">
+                <div class="skill-icon">📐</div>
+                <h3>3D CAD & Mechanical</h3>
+                <p>Mechanical design for custom mounts, housings, and test fixtures — bridging electronics and physical systems.</p>
+                <div class="skill-tags">
+                    <span class="skill-tag">Fusion 360</span>
+                    <span class="skill-tag">Shapr3D</span>
+                    <span class="skill-tag">FDM Printing</span>
+                </div>
+            </div>
+            <div class="skill-card reveal reveal-delay-1">
+                <div class="skill-icon">📡</div>
+                <h3>RF & Signal Processing</h3>
+                <p>Software-defined radio systems and spectrum analysis for educational and research signal applications.</p>
+                <div class="skill-tags">
+                    <span class="skill-tag">SDR</span>
+                    <span class="skill-tag">Fourier Analysis</span>
+                    <span class="skill-tag">LTI Systems</span>
+                    <span class="skill-tag">Spectrum Analysis</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <div class="section" id="research">
+        <div class="section-tag reveal">Background</div>
+        <h2 class="section-title reveal reveal-delay-1">Research &amp; <em>Education</em></h2>
+        <p class="section-lead reveal reveal-delay-2">A trajectory shaped by curiosity — from academic foundations to active collaboration with the world's leading space agencies.</p>
+
+        <div class="timeline reveal reveal-delay-3">
+            <div class="timeline-item">
+                <div class="timeline-year">2024 – PRESENT</div>
+                <h4>Space Optics Researcher · BEC Lab, IESL</h4>
+                <p>Developing and characterizing Zerodur-based optical breadboards for space applications. ESA & DLR collaborative research on precision laser systems for orbital deployment.</p>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">2023</div>
+                <h4>Registered Engineer · Technical Chamber of Greece (TEE-TCG)</h4>
+                <p>Obtained official engineering certification enabling legally binding technical studies, signatures, and electrical inspections across Greece under HD 384 / ELOT 60364.</p>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">2021 – 2023</div>
+                <h4>M.Sc. · Electrical & Space Optics Engineering</h4>
+                <p>Advanced specialization bridging classical electrical engineering with photonics, quantum optics, and space technology integration.</p>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">2017 – 2021</div>
+                <h4>B.Sc. · Electrical Engineering</h4>
+                <p>Foundations in circuits, electromagnetics, control systems, signal processing, and electronics design. Graduated from the University of Crete.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <div class="section" id="services">
+        <div class="section-tag reveal">Professional Services</div>
+        <h2 class="section-title reveal reveal-delay-1">How I Can <em>Help You</em></h2>
+        <p class="section-lead reveal reveal-delay-2">Deep-tech expertise meets certified professional practice. Whether you need a licensed engineer's stamp, a hardware prototype, or a private tutor — I deliver with precision.</p>
+
+        <div class="services-grid">
+            <div class="service-card amber reveal" onclick="openModal('modal-licensed')">
+                <div class="corner-accent"></div>
+                <div>
+                    <div class="service-num">01 / LICENSED</div>
+                    <h3>TEE Certified Engineering</h3>
+                    <p>Official inspections, technical consulting, and legally binding engineer signatures for electrical projects throughout Greece.</p>
+                    <ul class="service-features">
+                        <li>Engineer's signature (Δικαίωμα Υπογραφής)</li>
+                        <li>On-site infrastructure inspection & audit</li>
+                        <li>HD 384 / ELOT 60364 compliance</li>
+                        <li>Advisory for architects & contractors</li>
+                    </ul>
+                </div>
+                <button class="btn btn-outline btn-gold-o">View Certification Details →</button>
+            </div>
+
+            <div class="service-card green reveal reveal-delay-1" onclick="openModal('modal-consulting')">
+                <div class="corner-accent"></div>
+                <div>
+                    <div class="service-num">02 / B2B</div>
+                    <h3>Engineering Consulting</h3>
+                    <p>Hardware prototyping, PCB design, and embedded system solutions for deep-tech startups and R&amp;D laboratories. Legal B2B invoicing available.</p>
+                    <ul class="service-features">
+                        <li>PCB design & layout (KiCAD / OrCAD)</li>
+                        <li>Embedded firmware (STM32, Arduino)</li>
+                        <li>Lab automation & data acquisition</li>
+                        <li>ESA-standard technical documentation</li>
+                    </ul>
+                </div>
+                <button class="btn btn-outline btn-green-o">View Consulting Details →</button>
+            </div>
+
+            <div class="service-card sky reveal reveal-delay-2" onclick="openModal('modal-tutoring')">
+                <div class="corner-accent"></div>
+                <div>
+                    <div class="service-num">03 / TUTORING</div>
+                    <h3>University Tutoring</h3>
+                    <p>High-level instruction for EE and Physics undergraduates. An active researcher explains what textbooks don't — so you genuinely understand and pass.</p>
+                    <ul class="service-features">
+                        <li>Electromagnetics & Applied Optics</li>
+                        <li>Signals, Systems & Transforms</li>
+                        <li>MATLAB / Python / C lab support</li>
+                        <li>1-on-1, group & in-person (Heraklion)</li>
+                    </ul>
+                </div>
+                <button class="btn btn-outline" style="color:var(--sky);border-color:rgba(56,189,248,0.4);">View Tutoring Details →</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <div class="section" id="contact">
+        <div class="contact-grid">
+            <div class="contact-info reveal">
+                <div class="section-tag" style="margin-bottom:16px;">Get in Touch</div>
+                <h3>Let's Work<br><em style="font-style:normal;color:var(--amber);">Together</em></h3>
+                <p>Whether you have a technical challenge, need a certified engineer, or want to discuss research collaboration — reach out and let's talk.</p>
+                <div class="contact-links">
+                    <a href="mailto:ikoandreas@hotmail.gr" class="contact-link">
+                        <span class="contact-link-icon">✉</span>
+                        ikoandreas@hotmail.gr
+                    </a>
+                    <a href="https://www.linkedin.com/in/andreas-oikonomou-72729215b/" target="_blank" class="contact-link">
+                        <span class="contact-link-icon">in</span>
+                        LinkedIn Profile ↗
+                    </a>
+                    <span class="contact-link" style="cursor:default;">
+                        <span class="contact-link-icon">📍</span>
+                        Heraklion, Crete, Greece
+                    </span>
+                </div>
+            </div>
+
+            <div class="contact-form-block reveal reveal-delay-2">
+                <h4>Send a Message</h4>
+                <div class="form-group">
+                    <label>Your Name</label>
+                    <input type="text" placeholder="Jane Smith">
+                </div>
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <input type="email" placeholder="jane@company.com">
+                </div>
+                <div class="form-group">
+                    <label>Service Interest</label>
+                    <select>
+                        <option value="">Select a service…</option>
+                        <option>TEE Certified Engineering</option>
+                        <option>B2B Engineering Consulting</option>
+                        <option>University Tutoring</option>
+                        <option>Research Collaboration</option>
+                        <option>Other Inquiry</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Message</label>
+                    <textarea rows="4" placeholder="Describe your project or question…"></textarea>
+                </div>
+                <button class="btn btn-primary btn-full" onclick="handleFormSubmit(this)">Send Message →</button>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="logo">A.<span>OIKONOMOU</span></div>
+        <p>© 2026 Andreas Oikonomou · Heraklion, Crete · TEE-TCG Registered Engineer</p>
+        <p style="font-family:var(--mono);font-size:0.7rem;color:var(--subtle);">Built with precision.</p>
+    </footer>
+
+
+    <div class="modal-overlay" id="modal-licensed" onclick="closeModal(event, 'modal-licensed')">
+        <div class="modal-box">
+            <div class="modal-accent amber"></div>
+            <button class="modal-close" onclick="document.getElementById('modal-licensed').classList.remove('open')">×</button>
+            <div class="modal-eyebrow">01 · Licensed Services</div>
+            <h3>TEE Certified Engineering & Inspections</h3>
+            <p>As a registered member of the Technical Chamber of Greece (TEE-TCG) with a professional certificate in Electrical Engineering, I am legally authorized to consult on, inspect, and certify electrical projects across Greece.</p>
+
+            <h4>Official Services Provided</h4>
+            <ul class="modal-list">
+                <li><strong>Engineer's Signature:</strong> Legally binding sign-offs for electrical studies, schematics, and installations (Δικαίωμα Υπογραφής).</li>
+                <li><strong>Project Inspections:</strong> On-site evaluation and auditing of electrical infrastructure for compliance with Greek and EU safety standards (HD 384 / ELOT 60364).</li>
+                <li><strong>Technical Consulting:</strong> Advisory for contractors, architects, and developers on power distribution, lighting, and embedded systems integration.</li>
+                <li><strong>Energy Certificates:</strong> Documentation and reporting for building energy efficiency assessments.</li>
+            </ul>
+
+            <a href="mailto:ikoandreas@hotmail.gr?subject=TEE Engineering Inquiry" class="btn btn-primary btn-full" style="background:var(--gold);">Request Inspection or Signature →</a>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="modal-consulting" onclick="closeModal(event, 'modal-consulting')">
+        <div class="modal-box">
+            <div class="modal-accent green"></div>
+            <button class="modal-close" onclick="document.getElementById('modal-consulting').classList.remove('open')">×</button>
+            <div class="modal-eyebrow">02 · B2B Services</div>
+            <h3>Engineering Consulting</h3>
+            <p>Specialized freelance contracting for deep-tech startups, hardware developers, and research laboratories. Legal B2B invoicing available via Τίτλος Κτήσης for Greek entities.</p>
+
+            <h4>Core Capabilities</h4>
+            <ul class="modal-list">
+                <li><strong>PCB Design & Prototyping:</strong> Schematic capture and layout with KiCAD, OrCAD, or Allegro. From breadboard concept to functional printed circuit boards.</li>
+                <li><strong>Embedded Firmware:</strong> MCU programming in C for STM32, Arduino, and Raspberry Pi — instrument control and data acquisition pipelines.</li>
+                <li><strong>Lab Automation:</strong> Custom LabVIEW and VISA setups using oscilloscopes, function generators, and spectrum analyzers.</li>
+                <li><strong>Technical Documentation:</strong> Precise technical reports and specifications meeting ESA and aerospace-grade standards.</li>
+                <li><strong>Optical System Integration:</strong> Consultation on laser and photonic system design for research-grade setups.</li>
+            </ul>
+
+            <a href="mailto:ikoandreas@hotmail.gr?subject=B2B Consulting Inquiry" class="btn btn-primary btn-full" style="background:var(--green);">Email for Consulting →</a>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="modal-tutoring" onclick="closeModal(event, 'modal-tutoring')">
+        <div class="modal-box">
+            <div class="modal-accent sky"></div>
+            <button class="modal-close" onclick="document.getElementById('modal-tutoring').classList.remove('open')">×</button>
+            <div class="modal-eyebrow">03 · Tutoring</div>
+            <h3>Premium University Tutoring</h3>
+            <p>University lectures are often abstract. As an active researcher in Space Optics, I translate complex mathematics into intuitive frameworks — so you genuinely understand the principles and pass your exams confidently.</p>
+
+            <h4>Subjects Covered</h4>
+            <ul class="modal-list">
+                <li><strong>Electromagnetics & Applied Optics:</strong> Maxwell's equations, wave propagation, interference, and optical system design.</li>
+                <li><strong>Signals & Systems:</strong> Fourier, Laplace & Z-transforms, LTI systems, convolution, and frequency response.</li>
+                <li><strong>Electronics & Circuits:</strong> From passive components to op-amp design and transient analysis.</li>
+                <li><strong>Lab & Software Projects:</strong> Hands-on debugging and structuring of MATLAB, Python, and C assignments.</li>
+            </ul>
+
+            <h4>Session Formats</h4>
+            <ul class="modal-list">
+                <li><strong>1-on-1 Online:</strong> Intensive personalized sessions via video call with virtual whiteboard.</li>
+                <li><strong>Small Study Groups:</strong> Reduced rates for 2–3 students preparing for the same exam.</li>
+                <li><strong>In-Person (Heraklion):</strong> Available for local students in Crete upon request.</li>
+            </ul>
+
+            <a href="mailto:ikoandreas@hotmail.gr?subject=Tutoring Session Request" class="btn btn-primary btn-full">Book a Session →</a>
+        </div>
+    </div>
+
+    <script>
+        /* ---- SCROLL REVEAL ---- */
+        const revealEls = document.querySelectorAll('.reveal');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+        }, { threshold: 0.12 });
+        revealEls.forEach(el => observer.observe(el));
+
+        /* ---- MOBILE NAV ---- */
+        document.getElementById('navToggle').addEventListener('click', () => {
+            document.getElementById('navLinks').classList.toggle('open');
+        });
+        document.querySelectorAll('.nav-links a').forEach(a => {
+            a.addEventListener('click', () => document.getElementById('navLinks').classList.remove('open'));
+        });
+
+        /* ---- MODALS ---- */
+        function openModal(id) {
+            document.getElementById(id).classList.add('open');
+            document.body.style.overflow = 'hidden';
+        }
+        function closeModal(e, id) {
+            if (e.target === e.currentTarget) {
+                document.getElementById(id).classList.remove('open');
+                document.body.style.overflow = '';
+            }
+        }
+        document.querySelectorAll('.modal-close').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.modal-overlay.open').forEach(m => m.classList.remove('open'));
+                document.body.style.overflow = '';
+            });
+        });
+        document.addEventListener('keydown', e => {
+            if (e.key === 'Escape') {
+                document.querySelectorAll('.modal-overlay.open').forEach(m => m.classList.remove('open'));
+                document.body.style.overflow = '';
+            }
+        });
+
+        /* ---- CONTACT FORM ---- */
+        function handleFormSubmit(btn) {
+            const original = btn.textContent;
+            btn.textContent = 'Sending…';
+            btn.disabled = true;
+            setTimeout(() => {
+                btn.textContent = '✓ Message Sent';
+                btn.style.background = 'var(--green)';
+                setTimeout(() => { btn.textContent = original; btn.disabled = false; btn.style.background = ''; }, 3000);
+            }, 1200);
+        }
+    </script>
+</body>
+</html>
