@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Andreas Oikonomou | Electronics & Space Optics</title>
+    <style>
+        :root {
+            /* Warm, dark base to contrast with the amber */
+            --bg-dark: #120e0a; 
+            --bg-card: #1c1610;
+            --text-main: #fdfcfb;
+            --text-muted: #b0a89f;
+            
+            /* The Zerodur Honey/Amber Tint */
+            --accent: #d97706; 
+            --accent-hover: #b45309;
+            
+            --green: #10b981;
+            --gold: #f59e0b;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        /* --- ZERODUR OPTICAL BREADBOARD BACKGROUND --- */
+        body {
+            background-color: var(--bg-dark);
+            /* Amber tinted grid mimicking tapped holes */
+            background-image: radial-gradient(rgba(217, 119, 6, 0.2) 1px, transparent 1px);
+            background-size: 25px 25px; 
+            color: var(--text-main);
+            line-height: 1.6;
+        }
+
+        /* Navigation */
+        nav {
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: rgba(18, 14, 10, 0.85);
+            backdrop-filter: blur(8px);
+            position: sticky;
+            top: 0;
+            border-bottom: 1px solid #2d241a;
+            z-index: 100;
+        }
+
+        nav a {
+            color: var(--text-main);
+            text-decoration: none;
+            margin-left: 20px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        nav a:hover {
+            color: var(--accent);
+        }
+
+        /* The CV Button */
+        .nav-cv {
+            color: var(--accent);
+            border: 1px solid var(--accent);
+            padding: 6px 14px;
+            border-radius: 4px;
+            margin-left: 30px;
+        }
+
+        .nav-cv:hover {
+            background-color: var(--accent);
+            color: var(--bg-dark) !important;
+        }
+
+        /* Hero Section with Zerodur Glow */
+        header {
+            padding: 120px 20px;
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        /* The Amber Glow Effect */
+        header::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(217,119,6,0.12) 0%, rgba(18,14,10,0) 70%);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        header h1 { font-size: 3.5rem; margin-bottom: 10px; letter-spacing: -1px; }
+        header h2 { font-size: 1.5rem; color: var(--accent); margin-bottom: 20px; font-weight: 400; }
+        header p { color: var(--text-muted); font-size: 1.2rem; margin-bottom: 40px; }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--accent);
+            color: #120e0a;
+            padding: 12px 28px;
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 4px;
+            transition: background 0.3s;
+            cursor: pointer;
+            border: none;
+            font-size: 1rem;
+        }
+
+        .btn:hover { background-color: var(--accent-hover); color: white; }
+        
+        .btn-outline {
+            background-color: transparent;
+            color: var(--accent);
+            border: 2px solid var(--accent);
+            margin-top: 15px;
+            width: 100%;
+        }
+        
+        .btn-outline:hover { background-color: var(--accent); color: #120e0a; }
+        .btn-green { border-color: var(--green); color: var(--green); }
+        .btn-green:hover { background-color: var(--green); color: #120e0a; }
+        .btn-gold { border-color: var(--gold); color: var(--gold); }
+        .btn-gold:hover { background-color: var(--gold); color: #120e0a; }
+
+        /* Generic Section Styling */
+        .section {
+            padding: 80px 20px;
+            max-width: 1100px;
+            margin: 0 auto;
+            border-top: 1px solid #2d241a;
+            background-color: rgba(18, 14, 10, 0.7);
+        }
+
+        .section-title { font-size: 2.2rem; margin-bottom: 40px; color: var(--text-main); text-align: center;}
+        .section-title span { color: var(--accent); }
+
+        /* Grid Layouts */
+        .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+        .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+
+        .card {
+            background-color: var(--bg-card);
+            padding: 30px;
+            border-radius: 8px;
+            border-left: 4px solid var(--accent);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+            transition: transform 0.2s ease;
+        }
+        
+        .card:hover { transform: translateY(-5px); }
+        .card h3 { margin-bottom: 10px; font-size: 1.3rem; }
+        .card p { color: var(--text-muted); font-size: 0.95rem; }
+        ul { list-style-position: inside; color: var(--text-muted); margin-top: 15px; margin-bottom: 15px; }
+        li { margin-bottom: 8px; }
+
+        /* --- MODAL CSS --- */
+        .modal-overlay {
+            display: none; 
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(4px);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .modal-content {
+            background: var(--bg-card);
+            padding: 40px;
+            border-radius: 8px;
+            max-width: 650px;
+            width: 100%;
+            position: relative;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 15px; right: 20px;
+            font-size: 2rem;
+            cursor: pointer;
+            color: var(--text-muted);
+            line-height: 1;
+        }
+
+        .close-btn:hover { color: white; }
+        .modal-content h3 { color: var(--accent); font-size: 1.8rem; margin-bottom: 10px; }
+        .modal-content h4 { margin-top: 25px; margin-bottom: 10px; color: #f8fafc; font-size: 1.2rem; }
+        .modal-content p { color: var(--text-muted); margin-bottom: 10px; }
+
+        /* Footer */
+        footer { text-align: center; padding: 40px 20px; border-top: 1px solid #2d241a; color: var(--text-muted); background-color: var(--bg-dark); }
+
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div style="font-weight: bold; font-size: 1.3rem; letter-spacing: 1px;">A.OIKONOMOU</div>
+        <div>
+            <a href="#about">About</a>
+            <a href="#skills">Skills</a>
+            <a href="#services">Services</a>
+            <a href="./cv_2025v4.pdf" target="_blank" class="nav-cv">View CV</a>
+        </div>
+    </nav>
+
+    <header id="about">
+        <h1>Andreas Oikonomou</h1>
+        <h2>Certified Electrical & Space Optics Engineer</h2>
+        <p>Based in Heraklion, Crete. Registered member of the Technical Chamber of Greece (TEE-TCG). Currently researching at the BEC Lab (IESL) in collaboration with the European Space Agency (ESA) and the German Aerospace Center (DLR).</p>
+        <a href="#services" class="btn">View My Services</a>
+    </header>
+
+    <div class="section" id="skills">
+        <h2 class="section-title">Technical <span>Arsenal</span></h2>
+        <div class="grid-2">
+            <div class="card">
+                <h3>Hardware & Embedded</h3>
+                <p>Extensive experience moving from concept to physical prototype.</p>
+                <ul>
+                    <li>PCB Design (KiCAD, OrCAD, Allegro)</li>
+                    <li>Embedded Systems & MCU (STM32, Arduino, Raspberry Pi)</li>
+                    <li>Lab Automation & Data Acquisition (LabVIEW, VISA)</li>
+                    <li>3D CAD & Modeling (Fusion360, Shapr3D)</li>
+                </ul>
+            </div>
+            <div class="card">
+                <h3>Space Optics & Software</h3>
+                <p>Bridging the gap between code, data, and physical light.</p>
+                <ul>
+                    <li>Custom Optical Breadboards (Zerodur) for Space Applications</li>
+                    <li>Laser & Quantum Optical Systems Integration</li>
+                    <li>Programming (Python, MATLAB, C)</li>
+                    <li>Software Defined Radio (GNU Radio, GQRX)</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="section" id="services">
+        <h2 class="section-title">Professional <span>Services</span></h2>
+        <p style="color: var(--text-muted); margin-bottom: 30px; font-size: 1.1rem; text-align: center;">Leveraging deep-tech research and official certifications for industry, infrastructure, and academia.</p>
+        
+        <div class="grid-3">
+            <div class="card" style="border-left-color: var(--gold);">
+                <div>
+                    <h3 style="color: var(--gold);">Licensed Engineering (TEE)</h3>
+                    <p>Official inspections, consulting, and legally binding engineer signatures for electrical projects in Greece.</p>
+                </div>
+                <button class="btn btn-outline btn-gold" onclick="openModal('licensed-modal')">View Certification Details</button>
+            </div>
+            
+            <div class="card" style="border-left-color: var(--green);">
+                <div>
+                    <h3 style="color: var(--green);">B2B Engineering Consulting</h3>
+                    <p>Hardware prototyping, PCB design, and embedded system solutions for tech startups and R&D labs.</p>
+                </div>
+                <button class="btn btn-outline btn-green" onclick="openModal('consulting-modal')">View Consulting Details</button>
+            </div>
+
+            <div class="card">
+                <div>
+                    <h3>Premium University Tutoring</h3>
+                    <p>Targeted, high-level instruction for EE and Physics undergraduates stuck on bottleneck courses.</p>
+                </div>
+                <button class="btn btn-outline" onclick="openModal('tutoring-modal')">View Tutoring Details</button>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>© 2026 Andreas Oikonomou. All rights reserved.</p>
+    </footer>
+
+    <div class="modal-overlay" id="licensed-modal" onclick="closeModal(event)">
+        <div class="modal-content" style="border-top-color: var(--gold);">
+            <span class="close-btn" onclick="document.getElementById('licensed-modal').style.display='none'">&times;</span>
+            <h3 style="color: var(--gold);">Certified Engineering & Inspections</h3>
+            <p>As a registered member of the Technical Chamber of Greece (TEE-TCG) holding a professional certificate in Electrical Engineering, I am legally authorized to consult on and certify electrical projects.</p>
+            
+            <h4>Official Services Provided</h4>
+            <ul>
+                <li><strong>Engineer's Signature (Δικαίωμα Υπογραφής):</strong> Legally binding sign-offs for electrical studies, schematics, and installations.</li>
+                <li><strong>Project Inspections:</strong> On-site evaluation and auditing of electrical infrastructure to ensure compliance with Greek and EU safety standards (HD 384 / ELOT 60364).</li>
+                <li><strong>Technical Consulting:</strong> Advisory services for contractors, architects, and developers regarding power distribution, lighting, and embedded systems integration.</li>
+            </ul>
+
+            <a href="mailto:ikoandreas@hotmail.gr?subject=TEE%20Engineering%20Services%20Inquiry" class="btn" style="background-color: var(--gold); margin-top: 10px;">Request an Inspection/Signature</a>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="consulting-modal" onclick="closeModal(event)">
+        <div class="modal-content" style="border-top-color: var(--green);">
+            <span class="close-btn" onclick="document.getElementById('consulting-modal').style.display='none'">&times;</span>
+            <h3 style="color: var(--green);">B2B Engineering Consulting</h3>
+            <p>I provide specialized freelance contracting for deep-tech startups, hardware developers, and research laboratories. Legal B2B invoicing available via Title of Acquisition (Τίτλος Κτήσης) for Greek entities.</p>
+            
+            <h4>Core Capabilities</h4>
+            <ul>
+                <li><strong>PCB Design & Prototyping:</strong> Schematic capture and layout using KiCAD, OrCAD, or Allegro. Moving from breadboard to functional printed circuit boards.</li>
+                <li><strong>Embedded Systems:</strong> MCU programming in C (STM32, Arduino, Raspberry Pi) for instrument control and data acquisition.</li>
+                <li><strong>Lab Automation & Testing:</strong> Building setups with LabVIEW and Virtual Instrument Software Architecture (VISA), utilizing oscilloscopes, function generators, and spectrum analyzers.</li>
+                <li><strong>Technical Documentation:</strong> Writing precise, high-standard technical reports meeting demanding aerospace standards (ESA compliance experience).</li>
+            </ul>
+
+            <a href="mailto:ikoandreas@hotmail.gr?subject=B2B%20Consulting%20Inquiry" class="btn" style="background-color: var(--green); margin-top: 10px;">Email For Consulting</a>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="tutoring-modal" onclick="closeModal(event)">
+        <div class="modal-content">
+            <span class="close-btn" onclick="document.getElementById('tutoring-modal').style.display='none'">&times;</span>
+            <h3>Premium University Tutoring</h3>
+            <p>University lectures are abstract. As an active researcher in Space Optics, I translate complex math into intuitive frameworks so you can pass your exams and understand the core engineering principles.</p>
+            
+            <h4>Subjects Covered</h4>
+            <ul>
+                <li><strong>Electromagnetics & Applied Optics:</strong> Maxwell's equations, wave propagation, interference, and optical system design.</li>
+                <li><strong>Signals & Systems:</strong> Fourier/Laplace/Z-transforms and LTI systems.</li>
+                <li><strong>Software & Lab Projects:</strong> Hands-on assistance debugging and structuring MATLAB, Python, and C assignments.</li>
+            </ul>
+
+            <h4>Session Formats</h4>
+            <ul>
+                <li><strong>1-on-1 Online:</strong> Intensive, personalized problem-solving via video call and virtual whiteboard.</li>
+                <li><strong>Small Study Groups:</strong> Reduced rates for 2-3 students taking the same exam.</li>
+                <li><strong>In-Person (Heraklion):</strong> Available for local students based in Crete upon request.</li>
+            </ul>
+
+            <a href="mailto:ikoandreas@hotmail.gr?subject=Tutoring%20Inquiry" class="btn" style="margin-top: 10px;">Book a Session</a>
+        </div>
+    </div>
+
+    <script>
+        function openModal(modalId) {
+            document.getElementById(modalId).style.display = 'flex';
+        }
+
+        function closeModal(event) {
+            if (event.target.classList.contains('modal-overlay')) {
+                event.target.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>
